@@ -25,7 +25,7 @@ func (p *postUseCase) Update(id int, title, content string) (domain.Post, error)
 	return p.postRepo.Update(id, title, content)
 }
 
-func (p *postUseCase) Delete(id int) error {
+func (p *postUseCase) Delete(id int) (domain.Post, error) {
 	return p.postRepo.Delete(id)
 }
 

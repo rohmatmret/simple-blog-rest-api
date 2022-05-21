@@ -134,16 +134,7 @@ func (h *postHandler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *postHandler) Deleted(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	postId, _ := strconv.Atoi(id)
-	findPost, err := h.PostUsecase.FindByID(postId)
-	if err != nil {
-		domain.SetErrResponse(w, domain.PostErrResponse{
-			StatusCode: http.StatusNotFound,
-			Message:    "Item Not Found",
-			Error:      err.Error(),
-		}, http.StatusNotFound)
-		return
-	}
-	err = h.PostUsecase.Delete(postId)
+	post, err := h.PostUsecase.Delete(postId)
 	if err != nil {
 		domain.SetErrResponse(w, domain.PostErrResponse{
 			StatusCode: http.StatusInternalServerError,
@@ -152,6 +143,6 @@ func (h *postHandler) Deleted(w http.ResponseWriter, r *http.Request) {
 		}, http.StatusInternalServerError)
 		return
 	}
-	data, _ := json.Marshal(findPost)
+	data, _ := json.Marshal(post)
 	domain.SetResponse(w, data, http.StatusOK)
 }

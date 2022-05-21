@@ -64,8 +64,20 @@ func (p *PostRepository) Update(id int, title, content string) (domain.Post, err
 	return post, nil
 }
 
-func (p *PostRepository) Delete(id int) error {
-	return p.db.Debug().Model(&domain.Post{}).Where("id = ?", id).Delete(&domain.Post{}).Error
+func (p *PostRepository) Delete(id int) (domain.Post, error) {
+	var post domain.Post
+	err := p.db.Debug().Model(&domain.Post{}).First(&post, id).Error
+	if err != nil {
+		fmt.Println("error when find post by id", err)
+		return domain.Post{}, err
+	}
+
+	err = p.db.Debug().Model(&domain.Post{}).Where("id = ?", id).Delete(&domain.Post{}).Error
+	if err != nil {
+		fmt.Println("error when delete post", err)
+		return domain.Post{}, err
+	}
+	return post, nil
 }
 
 func NewPostRepository(db *gorm.DB) domain.PostRepository {

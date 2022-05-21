@@ -16,7 +16,7 @@ type PostRepository interface {
 	FindByID(id int) (Post, error)
 	Create(title, content string) (Post, error)
 	Update(id int, title, content string) (Post, error)
-	Delete(id int) error
+	Delete(id int) (Post, error)
 }
 
 type PostUseCase interface {
@@ -24,5 +24,5 @@ type PostUseCase interface {
 	FindByID(id int) (Post, error)
 	Create(title, content string) (Post, error)
 	Update(id int, title, content string) (Post, error)
-	Delete(id int) error
+	Delete(id int) (Post, error)
 }
